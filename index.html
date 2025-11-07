@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHAT WEB VIP</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <h2>CHAT WEB VIP</h2>
+    <div id="msg-box" class="msg-box"></div>
+
+    <div id="login-register">
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">تسجيل الدخول</button>
+        <button onclick="register()">إنشاء حساب</button>
+    </div>
+
+    <div id="chat-ui" style="display:none;">
+        <div class="chat-box" id="chat-box"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." autocomplete="off">
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
