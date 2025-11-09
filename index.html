@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Chat Clone Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+  body, html { height: 100%; background: #fafafa; }
+
+  /* ===== Background Gradient Animation ===== */
+  body {
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    background-size: 800% 800%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @keyframes gradientBG {
+    0% { background-position:0% 50%; }
+    50% { background-position:100% 50%; }
+    100% { background-position:0% 50%; }
+  }
+
+  /* ===== Login Box ===== */
+  .login-box {
+    width: 360px;
+    padding: 40px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: fadeInLogin 1s ease forwards;
+  }
+
+  @keyframes fadeInLogin { from { opacity:0; transform: translateY(-20px);} to { opacity:1; transform:translateY(0);} }
+
+  .login-box h2 {
+    margin-bottom: 30px;
+    color: #0095f6;
+  }
+
+  .login-box input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+
+  .login-box input:focus {
+    border-color: #0095f6;
+    box-shadow: 0 0 5px rgba(0,149,246,0.5);
+  }
+
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 25px;
+    background-color: #0095f6;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .login-box button:hover { background-color: #007acc; }
+
+  /* ===== Chat Container ===== */
+  .chat-container {
+    width: 100%;
+    height: 100vh;
+    display: none;
+    flex-direction: row;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 280px;
+    background-color: rgba(255,255,255,0.95);
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-top: 10px;
+  }
+
+  .friend {
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    transition: 0.3s;
+    margin: 5px;
+  }
+
+  .friend:hover { background-color: rgba(0,149,246,0.1); }
+
+  .friend img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #fff;
+    transition: 0.3s;
+  }
+
+  .friend-name { font-weight: 500; }
+
+  .chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(250,250,250,0.95);
+    backdrop-filter: blur(5px);
+  }
+
+  .chat-header {
+    padding: 15px;
+    background-color: rgba(255,255,255,0.95);
+    border-bottom: 1px solid #ddd;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 25px;
+    position: relative;
+    word-wrap: break-word;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .message.sent {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .message.received {
+    background-color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+
+  .chat-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.95);
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+
+  .chat-input input:focus {
+    border-color: #0095f6;
+    box-shadow: 0 0 5px rgba(0,149,246,0.5);
+  }
+
+  .chat-input button {
+    margin-left: 10px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 25px;
+    background-color: #0095f6;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .chat-input button:hover { background-color: #007acc; }
+
+  /* ===== Emoji Picker ===== */
+  .emoji-picker {
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+    gap: 5px;
+    flex-wrap: wrap;
+    width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .emoji-picker span {
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.2s;
+  }
+
+  .emoji-picker span:hover { transform: scale(1.2); }
+
+</style>
+</head>
+<body>
+
+<!-- ===== Login Form ===== -->
+<div class="login-box" id="login-box">
+  <h2>تسجيل الدخول</h2>
+  <input type="text" id="username" placeholder="اسم المستخدم">
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="login()">تسجيل الدخول</button>
+</div>
+
+<!-- ===== Chat Interface ===== -->
+<div class="chat-container" id="chat-container">
+  <div class="sidebar" id="friends-list">
+    <div class="friend" onclick="openChat('Alice')">
+      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Alice">
+      <div class="friend-name">Alice</div>
+    </div>
+    <div class="friend" onclick="openChat('Bob')">
+      <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Bob">
+      <div class="friend-name">Bob</div>
+    </div>
+    <div class="friend" onclick="openChat('Charlie')">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Charlie">
+      <div class="friend-name">Charlie</div>
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-header" id="chat-header">اختر صديقًا</div>
+    <div class="messages" id="messages"></div>
+    <div class="chat-input">
+      <input type="text" id="message-input" placeholder="اكتب رسالة...">
+      <button onclick="sendMessage()">ارسال</button>
+      <button onclick="toggleEmoji()">😎</button>
+    </div>
+    <div class="emoji-picker" id="emoji-picker">
+      <span>😀</span><span>😂</span><span>😎</span><span>😍</span><span>😭</span>
+      <span>👍</span><span>🎉</span><span>💖</span><span>🔥</span><span>🤯</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Login Function =====
+  function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    if(user && pass) {
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('chat-container').style.display = 'flex';
+    } else {
+      alert("يرجى إدخال اسم المستخدم وكلمة المرور");
+    }
+  }
+
+  // ===== Chat Functions =====
+  let currentFriend = null;
+  function openChat(name) {
+    currentFriend = name;
+    document.getElementById('chat-header').innerText = name;
+    document.getElementById('messages').innerHTML = `
+      <div class="message received">مرحبا! هذا محادثة مع ${name}.</div>
+    `;
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    if(!message || !currentFriend) return;
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message sent';
+    msgDiv.innerText = message;
+    document.getElementById('messages').appendChild(msgDiv);
+    input.value = '';
+    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+
+    // Auto-reply
+    setTimeout(() => {
+      const reply = document.createElement('div');
+      reply.className = 'message received';
+      reply.innerText = "😂 تم الاستلام!";
+      document.getElementById('messages').appendChild(reply);
+      document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+    }, 800);
+  }
+
+  // ===== Emoji Picker =====
+  function toggleEmoji() {
+    const picker = document.getElementById('emoji-picker');
+    picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  const emojis = document.querySelectorAll('#emoji-picker span');
+  emojis.forEach(e => {
+    e.addEventListener('click', () => {
+      document.getElementById('message-input').value += e.innerText;
+    });
+  });
+</script>
+
+</body>
+        </html>
